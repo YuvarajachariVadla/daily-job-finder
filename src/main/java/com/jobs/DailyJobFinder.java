@@ -275,7 +275,7 @@ public class DailyJobFinder {
 
         // Image part
         MimeBodyPart imagePart = new MimeBodyPart();
-        File imageFile = new File("C:\\Users\\user\\eclipse-workspace\\dailyjobfinder\\src\\main\\resources\\download.jpg");
+        File imageFile = new File("src/main/resources/download.jpg");
         imagePart.setDataHandler(new jakarta.activation.DataHandler(new jakarta.activation.FileDataSource(imageFile)));
         imagePart.setHeader("Content-ID", "<image>");
         imagePart.setDisposition(MimeBodyPart.INLINE);
