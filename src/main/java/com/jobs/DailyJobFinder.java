@@ -36,13 +36,22 @@ import jakarta.mail.internet.MimeMessage;
  */
 public class DailyJobFinder {
 
-    // ----- CONFIG -----
-    private static final String SERPAPI_KEY = "69ab69ece7c5bcfa2614447f3bf5d462aef50608a54f4f0460fc5c29a80ded38";
-    private static final String FROM_EMAIL = "vadlayuvaraj8247@gmail.com";
-    private static final String SMTP_HOST = "smtp.gmail.com";
-    private static final String SMTP_USER = "vadlayuvaraj8247@gmail.com";
-    private static final String SMTP_PASS = "bgaqhrrfgquvgfkl";
-    private static final String TO_EMAIL = "vadlayuvaraj8247@gmail.com";
+ 
+	// ----- CONFIG (from env or fallback for local testing) -----
+	private static final String SERPAPI_KEY = getenvOrDefault("SERPAPI_KEY",
+	        "69ab69ece7c5bcfa2614447f3bf5d462aef50608a54f4f0460fc5c29a80ded38");
+	private static final String FROM_EMAIL = getenvOrDefault("FROM_EMAIL", "vadlayuvaraj8247@gmail.com");
+	private static final String SMTP_HOST = getenvOrDefault("SMTP_HOST", "smtp.gmail.com");
+	private static final String SMTP_USER = getenvOrDefault("SMTP_USER", "vadlayuvaraj8247@gmail.com");
+	private static final String SMTP_PASS = getenvOrDefault("SMTP_PASS", "bgaqhrrfgquvgfkl");
+	private static final String TO_EMAIL = getenvOrDefault("TO_EMAIL", "vadlayuvaraj8247@gmail.com");
+
+	// helper
+	private static String getenvOrDefault(String name, String fallback) {
+	    String v = System.getenv(name);
+	    return (v != null && !v.isBlank()) ? v : fallback;
+	}
+
 
     // --- Job model class ---
     static class Job {
