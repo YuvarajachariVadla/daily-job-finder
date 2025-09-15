@@ -37,20 +37,30 @@ import jakarta.mail.internet.MimeMessage;
 public class DailyJobFinder {
 
  
-	// ----- CONFIG (from env or fallback for local testing) -----
-	private static final String SERPAPI_KEY = getenvOrDefault("SERPAPI_KEY",
-	        "69ab69ece7c5bcfa2614447f3bf5d462aef50608a54f4f0460fc5c29a80ded38");
-	private static final String FROM_EMAIL = getenvOrDefault("FROM_EMAIL", "vadlayuvaraj8247@gmail.com");
-	private static final String SMTP_HOST = getenvOrDefault("SMTP_HOST", "smtp.gmail.com");
-	private static final String SMTP_USER = getenvOrDefault("SMTP_USER", "vadlayuvaraj8247@gmail.com");
-	private static final String SMTP_PASS = getenvOrDefault("SMTP_PASS", "bgaqhrrfgquvgfkl");
-	private static final String TO_EMAIL = getenvOrDefault("TO_EMAIL", "vadlayuvaraj8247@gmail.com");
+	
+	// ----- CONFIG (must come from environment variables) -----
+    private static final String SERPAPI_KEY = requireEnv("SERPAPI_KEY");
+    private static final String FROM_EMAIL = requireEnv("FROM_EMAIL");
+    private static final String SMTP_HOST = getenvOrDefault("SMTP_HOST", "smtp.gmail.com"); // default host
+    private static final String SMTP_USER = requireEnv("SMTP_USER");
+    private static final String SMTP_PASS = requireEnv("SMTP_PASS");
+    private static final String TO_EMAIL = requireEnv("TO_EMAIL");
 
-	// helper
-	private static String getenvOrDefault(String name, String fallback) {
-	    String v = System.getenv(name);
-	    return (v != null && !v.isBlank()) ? v : fallback;
-	}
+    // --- Helpers ---
+    private static String getenvOrDefault(String name, String fallback) {
+        String v = System.getenv(name);
+        return (v != null && !v.isBlank()) ? v : fallback;
+    }
+
+    private static String requireEnv(String name) {
+        String v = System.getenv(name);
+        if (v == null || v.isBlank()) {
+            throw new IllegalStateException(
+                "Environment variable " + name + " is required but not set!"
+            );
+        }
+        return v;
+    }
 
 
     // --- Job model class ---
@@ -72,6 +82,7 @@ public class DailyJobFinder {
     }
 
     public static void main(String[] args) {
+        
         try {
             Map<String, List<Job>> results = new LinkedHashMap<>();
 
@@ -79,18 +90,10 @@ public class DailyJobFinder {
             List<String> IT_QUERIES = Arrays.asList(
                     "Java Developer jobs",
                     "Backend Developer jobs",
-                    "Frontend Developer jobs",
                     "Full Stack Developer jobs",
                     "Software Engineer jobs",
-                    "Data Engineer jobs",
                     "AI Engineer jobs",
-                    "Machine Learning Engineer jobs",
-                    "SDET jobs",
-                    "System Engineer jobs",
-                    "Database Administrator jobs",
                     "Business Analyst IT jobs",
-                    "IT Support jobs",
-                    "Product Engineer jobs",
                     "Data Analyst jobs",
                     "Data Scientist jobs"
             );
