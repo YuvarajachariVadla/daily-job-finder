@@ -39,6 +39,7 @@ public class DailyJobFinder {
  
 	
 	// ----- CONFIG (must come from environment variables) -----
+	// With the help of environment variable we can protect our sensitive data
     private static final String SERPAPI_KEY = requireEnv("SERPAPI_KEY");
     private static final String FROM_EMAIL = requireEnv("FROM_EMAIL");
     private static final String SMTP_HOST = getenvOrDefault("SMTP_HOST", "smtp.gmail.com"); // default host
@@ -46,7 +47,7 @@ public class DailyJobFinder {
     private static final String SMTP_PASS = requireEnv("SMTP_PASS");
     private static final String TO_EMAIL = requireEnv("TO_EMAIL");
 
-    // --- Helpers ---
+    // --- Helpers ---     Helps to pass the keys
     private static String getenvOrDefault(String name, String fallback) {
         String v = System.getenv(name);
         return (v != null && !v.isBlank()) ? v : fallback;
@@ -133,6 +134,7 @@ public class DailyJobFinder {
             JsonNode root = mapper.readTree(jsonResponse);
 
             // Debug: Print full JSON response (optional)
+            // For better understanding of the searching the jobs process we must use below print statement (I is an optional process) 
 //            System.out.println(root.toPrettyString());
 
             List<Job> jobs = new ArrayList<>();
@@ -191,6 +193,7 @@ public class DailyJobFinder {
     }
 
     // --- Build email HTML content ---
+    // Structuring Email
     private static String buildHtml(Map<String, List<Job>> results) {
         StringBuilder sb = new StringBuilder();
 
